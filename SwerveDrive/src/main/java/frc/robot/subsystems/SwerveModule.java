@@ -76,10 +76,11 @@ public class SwerveModule {
         angle -= absoluteEncoderOffsetRad;
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
     }
+/*May switch to getState */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            driveEncoder.getDistance
-        )
+            driveEncoder.getPosition(), new Rotation2d(turningEncoder.getPosition())
+            );
     }
     public void resetEncoders() {
         driveEncoder.setPosition(0);
