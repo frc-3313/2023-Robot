@@ -4,9 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
+//import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+//import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+//import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +30,8 @@ public class Robot extends TimedRobot {
 
     private RobotContainer m_robotContainer;
 
+  private Joystick ActionJoystick = new Joystick(1);
+  private DoubleSolenoid ClampSolenoid1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
     /**
      * This function is run when the robot is first started up and should be used
      * for any
@@ -56,8 +66,14 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        if (ActionJoystick.getRawButtonPressed(1)) {
+          ClampSolenoid1.set(kForward);
+        }
+        if (ActionJoystick.getRawButtonPressed(2)) {
+          ClampSolenoid1.set(kReverse);
+        }
     }
-
+ 
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
@@ -96,6 +112,8 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
     }
+  //public static Shuffleboard displayBoard = new ShuffleboardComponent<ShuffleboardComponent<C>>() {
+  //};
 
     /** This function is called periodically during operator control. */
     @Override
@@ -108,8 +126,15 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().cancelAll();
     }
 
-    /** This function is called periodically during test mode. */
-    @Override
-    public void testPeriodic() {
-    }
+  /** This function is called periodically during test mode. */
+  @Override
+  public void testPeriodic() {}
+
+  /** This function is called once when the robot is first started up. */
+  @Override
+  public void simulationInit() {}
+
+  /** This function is called periodically whilst in simulation. */
+  @Override
+  public void simulationPeriodic() {}
 }
